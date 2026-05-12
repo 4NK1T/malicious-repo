@@ -15,9 +15,8 @@ def get_db():
 def search_users():
     query = request.args.get("q", "")
     db = get_db()
-    # user-controlled input directly in query string
     rows = db.execute(
-        f"SELECT id, name, email FROM users WHERE name LIKE '%{query}%'"
+        "SELECT id, name, email FROM users WHERE name LIKE ?", (f"%{query}%",)
     ).fetchall()
     return jsonify([{"id": r[0], "name": r[1], "email": r[2]} for r in rows])
 
